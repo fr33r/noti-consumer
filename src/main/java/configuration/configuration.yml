@@ -1,0 +1,24 @@
+logging:
+    level: INFO
+
+kafka:
+    consumer:
+        bootstrap.servers:
+            #- 10.0.1.2:9092
+            - ${KAFKA_BOOTSTRAP_SERVERS}
+        group.id: noti-consumer
+        #schema.registry.url: http://10.0.1.2:8081
+        schema.registry.url: ${SCHEMA_REGISTRY_URL}
+sms:
+    accountSID: ${SMS_ACCOUNT_SID}
+    authToken: ${SMS_ACCOUNT_AUTH_TOKEN}
+
+metrics:
+    frequency: ${METRICS_FREQUENCY:-1 second}
+    reporters:
+        - type: graphite
+          host: ${GRAPHITE_REPORTER_HOST:-localhost}
+          port: ${GRAPHITE_REPORTER_PORT:-2003}
+          prefix: noti-consumer
+          durationUnit: ${GRAPHITE_REPORTER_DURATION_UNIT:-milliseconds}
+          rateUnit: ${GRAPHITE_REPORTER_RATE_UNIT:-seconds}

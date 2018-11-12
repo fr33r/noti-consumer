@@ -1,0 +1,36 @@
+version: '3'
+services:
+  noti-consumer:
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    env_file: ./noti-consumer.env
+    depends_on:
+      - kafka
+      - schema-registry
+      - graphite
+  kafka:
+    image: spotify/kafka
+    restart: always
+    ports:
+      - '2181:2181'
+      - '9092:9092'
+    env_file: ./kafka.env
+  schema-registry:
+    image: 'confluentinc/cp-schema-registry:4.1.0'
+    restart: always
+    ports:
+      - '8081:8081'
+    env_file: ./schema-registry.env
+    depends_on:
+      - kafka 
+  graphite:
+    image: graphiteapp/graphite-statsd
+    restart: always
+    ports:
+      - '80:80'
+      - '2003-2004:2003-2004'
+      - '2023-2024:2023-2024'
+      - '8126:8126'
+      - '8125:8125/udp'
+
